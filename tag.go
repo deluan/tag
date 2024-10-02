@@ -6,12 +6,13 @@
 // parsing and artwork extraction.
 //
 // Detect and parse tag metadata from an io.ReadSeeker (i.e. an *os.File):
-// 	m, err := tag.ReadFrom(f)
-// 	if err != nil {
-// 		log.Fatal(err)
-// 	}
-// 	log.Print(m.Format()) // The detected format.
-// 	log.Print(m.Title())  // The title of the track (see Metadata interface for more details).
+//
+//	m, err := tag.ReadFrom(f)
+//	if err != nil {
+//		log.Fatal(err)
+//	}
+//	log.Print(m.Format()) // The detected format.
+//	log.Print(m.Title())  // The title of the track (see Metadata interface for more details).
 package tag
 
 import (
@@ -134,6 +135,14 @@ type Metadata interface {
 
 	// Picture returns a picture, or nil if not available.
 	Picture() *Picture
+
+	// PictureTypes returns a slice of picture types available in the metadata.
+	PictureTypes() []string
+
+	// Pictures returns a map of pictures, or nil if not available.
+	Pictures(pictureType string) *Picture
+
+	//Pictures(pictureType string) Picture
 
 	// Lyrics returns the lyrics, or an empty string if unavailable.
 	Lyrics() string

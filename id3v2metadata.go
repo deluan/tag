@@ -150,3 +150,11 @@ func (m metadataID3v2) Picture() *Picture {
 	}
 	return v.(*Picture)
 }
+
+func (m metadataID3v2) PictureTypes() []string {
+	return []string{"cover"}
+}
+
+func (m metadataID3v2) Pictures(string) *Picture {
+	return m.Picture()
+}

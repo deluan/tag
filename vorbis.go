@@ -22,8 +22,10 @@ func newMetadataVorbis() *metadataVorbis {
 }
 
 type metadataVorbis struct {
-	c map[string]string // the vorbis comments
-	p *Picture
+	c      map[string]string // the vorbis comments
+	p      *Picture
+	ps     map[string]*Picture
+	pTypes []string
 }
 
 func (m *metadataVorbis) readVorbisComment(r io.Reader) error {
@@ -135,14 +137,25 @@ func (m *metadataVorbis) readPictureBlock(r io.Reader) error {
 		return err
 	}
 
-	m.p = &Picture{
+	m.addPicture(&Picture{
 		Ext:         ext,
 		MIMEType:    mime,
 		Type:        pictureType,
 		Description: desc,
 		Data:        data,
-	}
+	})
 	return nil
+}
+
+func (m *metadataVorbis) addPicture(p *Picture) {
+	if m.p == nil {
+		m.p = p
+	}
+	if m.ps == nil {
+		m.ps = make(map[string]*Picture)
+	}
+	m.pTypes = append(m.pTypes, p.Type)
+	m.ps[p.Type] = p
 }
 
 func parseComment(c string) (k, v string, err error) {
@@ -263,4 +276,15 @@ func (m *metadataVorbis) Comment() string {
 
 func (m *metadataVorbis) Picture() *Picture {
 	return m.p
+}
+
+func (m *metadataVorbis) PictureTypes() []string {
+	return m.pTypes
+}
+
+func (m *metadataVorbis) Pictures(pType string) *Picture {
+	if p, ok := m.ps[pType]; ok {
+		return p
+	}
+	return nil
 }

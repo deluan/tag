@@ -96,6 +96,14 @@ func (m metadataDSF) Picture() *Picture {
 	return m.id3.Picture()
 }
 
+func (m metadataDSF) PictureTypes() []string {
+	return []string{"cover"}
+}
+
+func (m metadataDSF) Pictures(string) *Picture {
+	return m.id3.Picture()
+}
+
 func (m metadataDSF) Lyrics() string {
 	return m.id3.Lyrics()
 }

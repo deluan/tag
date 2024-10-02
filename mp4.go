@@ -377,3 +377,11 @@ func (m metadataMP4) Picture() *Picture {
 	p, _ := v.(*Picture)
 	return p
 }
+
+func (m metadataMP4) PictureTypes() []string {
+	return []string{"cover"}
+}
+
+func (m metadataMP4) Pictures(string) *Picture {
+	return m.Picture()
+}
